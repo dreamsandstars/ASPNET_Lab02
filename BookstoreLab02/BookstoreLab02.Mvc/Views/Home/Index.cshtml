@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="lab-hero">
+    <h1>Mini Bookstore Catalog.</h1>
+    <p>Bài thực hành xây dựng ứng dụng ASP.NET Core MVC quản lý danh mục sách.</p>
+</div>
+
+<div class="info-panel home-goal">
+    <div class="info-icon">i</div>
+    <div>
+        <h4>Mục tiêu bài lab.</h4>
+        <p>Ứng dụng <strong>Controller</strong>, <strong>Service</strong>, <strong>ViewModel</strong> và <strong>Razor View</strong> vào bài toán quản lý hiệu sách mini — từ danh sách, chi tiết đến thống kê kho.</p>
+    </div>
+</div>
+
+<h3 class="section-title">Luồng hoạt động chính.</h3>
+<ol class="flow-list numbered-flow">
+    <li><span>1</span><p>User truy cập URL mong muốn.</p></li>
+    <li><span>2</span><p><strong>BooksController</strong> tiếp nhận request.</p></li>
+    <li><span>3</span><p>Gọi <strong>BookService</strong> lấy dữ liệu kho sách.</p></li>
+    <li><span>4</span><p>Chuyển đổi thông tin sang <strong>BookViewModel</strong>.</p></li>
+    <li><span>5</span><p>Trả về <strong>Razor View</strong> để hiển thị danh sách hay chi tiết sách.</p></li>
+</ol>
+
+<div class="text-center mt-4">
+    <a class="btn btn-primary btn-lg catalog-btn" href="/Books">Đi đến Danh mục Sách →</a>
+</div>

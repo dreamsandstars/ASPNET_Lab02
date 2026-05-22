@@ -1,0 +1,128 @@
+@model BookDetailViewModel
+@{
+    ViewData["Title"] = "Chi tiết Sách";
+}
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Chi tiết Sách.</h2>
+        <p class="page-description">@Model.Title</p>
+    </div>
+    <a class="btn btn-light" href="/Books">← Danh mục</a>
+</div>
+
+<div class="detail-layout">
+    @* Main info table *@
+    <div>
+        <table class="table table-bordered detail-table">
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <td><code class="table-code">#@Model.Id</code></td>
+                </tr>
+                <tr>
+                    <th>ISBN</th>
+                    <td><code class="table-code">@Model.Isbn</code></td>
+                </tr>
+                <tr>
+                    <th>Tựa sách</th>
+                    <td style="font-weight:600;font-size:1rem;color:#1f2937;">@Model.Title</td>
+                </tr>
+                <tr>
+                    <th>Thể loại</th>
+                    <td><span class="category-badge">@Model.Category</span></td>
+                </tr>
+                <tr>
+                    <th>Nhà xuất bản</th>
+                    <td>@Model.Publisher</td>
+                </tr>
+                <tr>
+                    <th>Đơn giá</th>
+                    <td style="font-weight:600;color:#1f2937;font-size:1.05rem;">@Model.PriceText</td>
+                </tr>
+                <tr>
+                    <th>Tồn kho</th>
+                    <td style="font-weight:500;font-family:'JetBrains Mono',monospace;">@Model.StockQuantity cuốn</td>
+                </tr>
+                <tr>
+                    <th>Mức tồn tối thiểu</th>
+                    <td style="font-family:'JetBrains Mono',monospace;color:#6b7280;">@Model.MinStock cuốn</td>
+                </tr>
+                <tr>
+                    <th>Giá trị tồn kho</th>
+                    <td style="font-weight:600;color:#2563eb;">@Model.InventoryValueText</td>
+                </tr>
+                <tr>
+                    <th>Tình trạng</th>
+                    <td><span class="@Model.StockBadgeClass">@Model.StockStatus</span></td>
+                </tr>
+                <tr>
+                    <th>Đánh giá</th>
+                    <td>
+                        <span style="color:#f59e0b; font-size:1.1rem;">
+                            @for(int i=1; i<=5; i++) {
+                                <span>@(i <= Math.Round(Model.Rating) ? "★" : "☆")</span>
+                            }
+                        </span>
+                        <span style="color:#6b7280; font-weight:600; margin-left:0.5rem;">@Model.Rating / 5.0</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Gợi ý nhập hàng</th>
+                    <td style="color:#6b7280;">@Model.ReorderSuggestion</td>
+                </tr>
+                <tr>
+                    <th>Cập nhật lần cuối</th>
+                    <td style="color:#6b7280;font-family:'JetBrains Mono',monospace;font-size:0.85rem;">@Model.LastRestockedText</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @* Sidebar cards *@
+    <div>
+        <div class="info-card info-card-@Model.StockStatusClass">
+            <div class="info-card-icon">
+                @if (Model.StockQuantity <= 0)
+                {
+                    <span>⚠️</span>
+                }
+                else if (Model.StockQuantity <= Model.MinStock)
+                {
+                    <span>⚠️</span>
+                }
+                else
+                {
+                    <span>✓</span>
+                }
+            </div>
+            <div class="info-card-content">
+                <h4>Tình trạng kho</h4>
+                <h3>@Model.StockStatus</h3>
+                <p>@Model.ReorderSuggestion</p>
+            </div>
+        </div>
+
+        <div class="info-card info-card-info">
+            <div class="info-card-icon">
+                <span>💰</span>
+            </div>
+            <div class="info-card-content">
+                <h4>Giá trị hiện tại</h4>
+                <h3>@Model.InventoryValueText</h3>
+                <p>Tổng giá trị ước tính dựa trên tồn kho.</p>
+            </div>
+        </div>
+
+        <div class="info-card info-card-neutral">
+            <div class="info-card-icon">
+                <span>📅</span>
+            </div>
+            <div class="info-card-content">
+                <h4>Cập nhật lần cuối</h4>
+                <h3>@Model.LastRestockedText</h3>
+                <p>Thông tin sản phẩm được cập nhật gần nhất.</p>
+            </div>
+        </div>
+    </div>
+</div>

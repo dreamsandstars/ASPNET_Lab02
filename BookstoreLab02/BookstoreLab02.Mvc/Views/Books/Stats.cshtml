@@ -1,0 +1,143 @@
+@model BookStatsViewModel
+@{
+    ViewData["Title"] = "Thống kê Kho sách";
+}
+
+<div class="page-header">
+    <div class="stats-header">
+        <span class="stats-icon-main">📊</span>
+        <div>
+            <h2 class="page-title">Thống kê Kho sách.</h2>
+            <p class="page-description">Trang này giúp bạn xem nhanh tổng quan tình hình tồn kho của cửa hàng.</p>
+        </div>
+    </div>
+    <a class="btn btn-light" href="/Books">← Quay lại danh sách</a>
+</div>
+
+<div class="row g-3">
+    <div class="col">
+        <div class="stat-card-premium stat-card-blue">
+            <div class="stat-icon-wrapper">📦</div>
+            <div class="stat-value-lg">@Model.TotalTitles</div>
+            <div class="stat-label-md">Tổng số loại sách</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card-premium stat-card-green">
+            <div class="stat-icon-wrapper">📚</div>
+            <div class="stat-value-lg">@Model.TotalCopies</div>
+            <div class="stat-label-md">Tổng số lượng tồn kho</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card-premium stat-card-purple">
+            <div class="stat-icon-wrapper">💰</div>
+            <div class="stat-value-lg">@Model.TotalInventoryValueText</div>
+            <div class="stat-label-md">Tổng giá trị tồn kho</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card-premium stat-card-red">
+            <div class="stat-icon-wrapper">❌</div>
+            <div class="stat-value-lg">@Model.OutOfStockCount</div>
+            <div class="stat-label-md">Sách đã hết hàng</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="stat-card-premium stat-card-orange">
+            <div class="stat-icon-wrapper">⚠️</div>
+            <div class="stat-value-lg">@Model.NeedReorderCount</div>
+            <div class="stat-label-md">Sách cần nhập thêm</div>
+        </div>
+    </div>
+</div>
+
+<div class="stats-alert">
+    <div class="stats-alert-icon">⚠️</div>
+    <div class="stats-alert-content">
+        <h4>Đánh giá tình hình tồn kho</h4>
+        <p>
+            @if (Model.OutOfStockCount > 0 || Model.NeedReorderCount > 0)
+            {
+                <span class="text-danger fw-bold">Một số sản phẩm gần hết hàng. Nên lập kế hoạch nhập thêm.</span><br />
+                <span>Hiện tại có @Model.OutOfStockCount sản phẩm đã hết hàng và @Model.NeedReorderCount sản phẩm đang ở mức tồn kho thấp hoặc bằng mức tối thiểu.</span><br />
+                <span>Hãy kiểm tra danh mục sách sản phẩm để xem chi tiết.</span>
+            }
+            else
+            {
+                <span class="text-success fw-bold">Tình hình tồn kho đang ở mức an toàn.</span><br />
+                <span>Tất cả sản phẩm đều có số lượng ổn định trên mức tối thiểu.</span>
+            }
+        </p>
+    </div>
+</div>
+
+    @* Category Breakdown *@
+    <div class="stats-section-premium mt-4">
+        <h3 class="section-title-premium">
+            <span class="title-icon">📊</span> Phân tích theo Thể loại
+        </h3>
+        <div class="table-responsive">
+            <table class="table table-hover stats-table-premium">
+                <thead>
+                    <tr>
+                        <th>Thể loại</th>
+                        <th style="text-align:center;">Số lượng tựa sách</th>
+                        <th style="text-align:right;">Tổng giá trị tồn kho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cat in Model.CategoryBreakdown)
+                    {
+                        <tr>
+                            <td style="font-weight:600; color:#1f2937;">@cat.CategoryName</td>
+                            <td style="text-align:center; font-family:'JetBrains Mono',monospace;">@cat.Count</td>
+                            <td style="text-align:right; font-weight:600; color:#2563eb;">@cat.TotalValueText</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="stats-detail-grid">
+    <div class="detail-section">
+        <h4>Chi tiết theo trạng thái</h4>
+        <table class="stats-table-plain">
+            <tbody>
+                <tr>
+                    <td><span class="status-indicator bg-success"></span> Sản phẩm còn hàng (tồn kho > mức tối thiểu)</td>
+                    <td>@Model.InStockCount</td>
+                </tr>
+                <tr>
+                    <td><span class="status-indicator bg-warning"></span> Sản phẩm cần nhập thêm (tồn kho ≤ mức tối thiểu)</td>
+                    <td>@Model.NeedReorderCount</td>
+                </tr>
+                <tr>
+                    <td><span class="status-indicator bg-danger"></span> Sản phẩm đã hết hàng (tồn kho = 0)</td>
+                    <td>@Model.OutOfStockCount</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="detail-section">
+        <h4>Giá trị tồn kho</h4>
+        <table class="stats-table-plain">
+            <tbody>
+                <tr>
+                    <td>Giá trị tồn kho cao nhất</td>
+                    <td class="value-highlight">@Model.MaxInventoryValueText</td>
+                </tr>
+                <tr>
+                    <td>Giá trị tồn kho trung bình mỗi loại</td>
+                    <td class="value-highlight">@Model.AverageInventoryValueText</td>
+                </tr>
+                <tr>
+                    <td>Số lượng trung bình mỗi loại</td>
+                    <td>@Model.AverageQuantity.ToString("N2")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
