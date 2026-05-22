@@ -1,0 +1,40 @@
+@model BookDetailViewModel
+
+@{ ViewData["Title"] = "Chi Tiết Sách"; }
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Chi Tiết Sách</h2>
+        <p class="page-description">Thông tin đầy đủ của tựa sách.</p>
+    </div>
+    <a class="btn btn-light" href="/Books">Quay lại danh sách</a>
+</div>
+
+<div class="detail-layout">
+    <div>
+        <table class="table table-bordered">
+            <tr><th>ISBN</th><td>@Model.Isbn</td></tr>
+            <tr><th>Tên sách</th><td>@Model.Title</td></tr>
+            <tr><th>Tác giả</th><td>@Model.Author</td></tr>
+            <tr><th>Thể loại</th><td>@Model.Category</td></tr>
+            <tr><th>Nhà xuất bản</th><td>@Model.Publisher</td></tr>
+            <tr><th>Ngày phát hành</th><td>@Model.PublishedDateText</td></tr>
+            <tr><th>Giá bán</th><td>@Model.PriceText</td></tr>
+            <tr><th>Trong kho</th><td>@Model.StockQuantity quyển (Tối thiểu: @Model.MinStock)</td></tr>
+            <tr><th>Tổng giá trị kho</th><td>@Model.InventoryValueText</td></tr>
+        </table>
+    </div>
+
+    <div>
+        <div class="side-card @(Model.StockQuantity <= Model.MinStock ? (Model.StockQuantity == 0 ? "danger" : "warning") : "success")">
+            <h4>Trạng thái kho</h4>
+            <h3>@Model.StockStatus</h3>
+            <p>@Model.ReorderSuggestion</p>
+        </div>
+        <div class="side-card info">
+            <h4>Giá trị tồn kho</h4>
+            <h3>@Model.InventoryValueText</h3>
+            <p>Dựa trên số lượng và giá hiện tại.</p>
+        </div>
+    </div>
+</div>

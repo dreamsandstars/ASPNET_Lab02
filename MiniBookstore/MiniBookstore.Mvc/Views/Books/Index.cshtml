@@ -1,0 +1,56 @@
+@model List<BookListItemViewModel>
+
+@{ ViewData["Title"] = "Kho Sách"; }
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Kho Sách</h2>
+        <p class="page-description">Quản lý danh sách các tựa sách hiện có trong hệ thống.</p>
+    </div>
+    <div>
+        <a class="btn btn-primary" href="/Books/Stats">Xem thống kê</a>
+    </div>
+</div>
+
+<div class="info-panel">
+    <strong>Tổng số tựa sách:</strong> @Model.Count
+</div>
+
+@if (Model.Count == 0)
+{
+    <p>Chưa có tựa sách nào.</p>
+}
+else
+{
+    <table class="table table-bordered table-striped align-middle">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Tên sách</th>
+                <th>Tác giả</th>
+                <th>Thể loại</th>
+                <th>Giá bán</th>
+                <th>Số lượng</th>
+                <th>Trạng thái</th>
+                <th>Chi tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Isbn</td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Category</td>
+                <td>@book.PriceText</td>
+                <td>@book.StockQuantity</td>
+                <td><span class="@book.StockStatusClass">@book.StockStatus</span></td>
+                <td><a class="btn btn-sm btn-outline-info" href="/Books/Detail/@book.Id">Xem</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<a class="btn btn-light" href="/">Quay lại trang chủ</a>

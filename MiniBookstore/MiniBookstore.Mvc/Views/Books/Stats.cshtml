@@ -1,0 +1,50 @@
+@model BookStatsViewModel
+
+@{ ViewData["Title"] = "Thống Kê Kho"; }
+
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Thống Kê Kho Sách</h2>
+        <p class="page-description">Tổng quan tình hình sách có trong cửa hàng.</p>
+    </div>
+    <a class="btn btn-light" href="/Books">Quay lại</a>
+</div>
+
+<div class="stat-grid">
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalTitles</div>
+        <div class="stat-label">Tổng tựa sách</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalBooksInStock</div>
+        <div class="stat-label">Số quyển đang có</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">@Model.TotalInventoryValueText</div>
+        <div class="stat-label">Tổng vốn tồn kho</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number text-danger">@Model.OutOfStockCount</div>
+        <div class="stat-label">Đã hết sách</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number text-warning">@Model.LowStockCount</div>
+        <div class="stat-label">Sách sắp hết</div>
+    </div>
+</div>
+
+<div class="info-panel">
+    <h4>Tình trạng</h4>
+    @if (Model.OutOfStockCount > 0)
+    {
+        <p class="text-danger">Hiện có sách đã cạn, hãy lên kế hoạch nhập hàng.</p>
+    }
+    else if (Model.LowStockCount > 0)
+    {
+        <p class="text-warning">Một số sách sát mức an toàn, cần xem xét nhập thêm.</p>
+    }
+    else
+    {
+        <p class="text-success">Số lượng mọi sách đều trong vùng an toàn.</p>
+    }
+</div>
